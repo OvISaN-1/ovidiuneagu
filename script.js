@@ -35,6 +35,14 @@
   }
   syncButton();
 
+  // The email address is assembled here so simple scraper bots do not find it in the HTML.
+  var email = document.getElementById("email-link");
+  if (email) {
+    var address = email.getAttribute("data-user") + "@" + email.getAttribute("data-domain");
+    email.href = "mailto:" + address;
+    email.querySelector("span").textContent = address;
+  }
+
   // Sections below the hero fade in once as they scroll into view.
   var items = document.querySelectorAll(".reveal");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
