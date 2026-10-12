@@ -1,5 +1,5 @@
 /* Runs SQLite (sql.js) off the main thread so the page stays responsive during the slow query. */
-importScripts("sql-wasm.js");
+importScripts("sql-wasm.js?v=20261013");
 
 var db = null;
 

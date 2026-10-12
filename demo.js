@@ -2,6 +2,9 @@
 (function () {
   "use strict";
 
+  /* Bump this when demo/worker.js changes, so browsers never pair a cached worker with new queries. */
+  var VERSION = "20261013";
+
   var root = document.getElementById("demo");
   if (!root || !window.Worker) return;
 
@@ -17,7 +20,7 @@
 
   function call(msg) {
     if (!worker) {
-      worker = new Worker("demo/worker.js");
+      worker = new Worker("demo/worker.js?v=" + VERSION);
       worker.onmessage = function (e) {
         var cb = pending[e.data.id];
         delete pending[e.data.id];
@@ -92,8 +95,9 @@
           render(card, r);
           updateSummary();
         })
-        .catch(function () {
-          card.querySelector(".demo-out").textContent = "The demo could not start in this browser.";
+        .catch(function (err) {
+          if (window.console) console.error("Query demo:", err);
+          card.querySelector(".demo-out").textContent = "The demo could not run. Refresh the page and try again.";
         })
         .then(function () {
           btn.textContent = label;
