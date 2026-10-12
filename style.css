@@ -108,6 +108,7 @@ p { margin: 0 0 1rem; }
 .projects li { padding: 1.5rem 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr; gap: .25rem 2rem; }
 .projects li:last-child { border-bottom: 1px solid var(--line); }
 .projects p { color: var(--muted); margin: 0; max-width: 62ch; }
+.projects .meta { font-size: .9rem; margin-top: .15rem; }
 @media (min-width: 768px) { .projects li { grid-template-columns: 1fr 2fr; } }
 
 /* Contact */
