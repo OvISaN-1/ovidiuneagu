@@ -145,43 +145,45 @@
 
     <section class="wrap section reveal" id="demo">
       <h2>Try it: tuning a slow query</h2>
-      <p class="note">Both queries list every customer with their total spend and latest order. They run here in your browser on SQLite, against 40,000 made-up orders with no indexes. The first query reads the orders table twice for each customer. The second reads it once.</p>
+      <p class="note">Both queries list every customer with their total spend and latest order. They are written in T-SQL and run unchanged on SQL Server. Here they run in your browser on SQLite, against 40,000 made-up orders with no indexes. The first query reads the Orders table twice for each customer. The second reads it once.</p>
       <div class="demo">
         <div class="demo-card">
           <div class="demo-head">
             <h3>Before</h3>
             <span>Correlated subqueries</span>
           </div>
-<pre class="code"><code>SELECT c.customer_id, c.name,
-  (SELECT SUM(o.amount)
-     FROM orders o
-    WHERE o.customer_id = c.customer_id
-  ) AS total_spend,
-  (SELECT MAX(o.order_date)
-     FROM orders o
-    WHERE o.customer_id = c.customer_id
-  ) AS last_order
-FROM customers c
-ORDER BY c.customer_id;</code></pre>
+<pre class="code"><code>SELECT c.CustomerID, c.Name,
+  (SELECT SUM(o.Amount)
+     FROM dbo.Orders AS o
+    WHERE o.CustomerID = c.CustomerID
+  ) AS TotalSpend,
+  (SELECT MAX(o.OrderDate)
+     FROM dbo.Orders AS o
+    WHERE o.CustomerID = c.CustomerID
+  ) AS LastOrder
+FROM dbo.Customers AS c
+ORDER BY c.CustomerID;</code></pre>
           <button class="btn btn-ghost demo-run" type="button" data-query="slow">Run before</button>
           <div class="demo-out" aria-live="polite"></div>
         </div>
         <div class="demo-card">
           <div class="demo-head">
             <h3>After</h3>
-            <span>One set-based pass</span>
+            <span>One set-based pass with a CTE</span>
           </div>
-<pre class="code"><code>SELECT c.customer_id, c.name,
-       t.total_spend, t.last_order
-FROM customers c
-LEFT JOIN (
-  SELECT customer_id,
-         SUM(amount) AS total_spend,
-         MAX(order_date) AS last_order
-  FROM orders
-  GROUP BY customer_id
-) t ON t.customer_id = c.customer_id
-ORDER BY c.customer_id;</code></pre>
+<pre class="code"><code>WITH Totals AS (
+  SELECT CustomerID,
+         SUM(Amount) AS TotalSpend,
+         MAX(OrderDate) AS LastOrder
+  FROM dbo.Orders
+  GROUP BY CustomerID
+)
+SELECT c.CustomerID, c.Name,
+       t.TotalSpend, t.LastOrder
+FROM dbo.Customers AS c
+LEFT JOIN Totals AS t
+  ON t.CustomerID = c.CustomerID
+ORDER BY c.CustomerID;</code></pre>
           <button class="btn btn-primary demo-run" type="button" data-query="fast">Run after</button>
           <div class="demo-out" aria-live="polite"></div>
         </div>

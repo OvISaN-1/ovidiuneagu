@@ -18,16 +18,18 @@ function build(SQL) {
   db = new SQL.Database();
   /* No indexes on purpose, and stop SQLite from creating temporary ones, so it behaves like a table nobody indexed. */
   db.run("PRAGMA automatic_index = OFF;");
-  db.run("CREATE TABLE customers (customer_id INTEGER, name TEXT);");
-  db.run("CREATE TABLE orders (order_id INTEGER, customer_id INTEGER, order_date TEXT, amount REAL);");
+  /* A schema called dbo, so the queries can be written exactly as they would be in SQL Server. */
+  db.run("ATTACH DATABASE ':memory:' AS dbo;");
+  db.run("CREATE TABLE dbo.Customers (CustomerID INTEGER, Name TEXT);");
+  db.run("CREATE TABLE dbo.Orders (OrderID INTEGER, CustomerID INTEGER, OrderDate TEXT, Amount REAL);");
 
   var rand = rng(42);
   db.run("BEGIN;");
-  var c = db.prepare("INSERT INTO customers VALUES (?, ?);");
+  var c = db.prepare("INSERT INTO dbo.Customers VALUES (?, ?);");
   for (var i = 1; i <= CUSTOMERS; i++) c.run([i, "Customer " + i]);
   c.free();
 
-  var o = db.prepare("INSERT INTO orders VALUES (?, ?, ?, ?);");
+  var o = db.prepare("INSERT INTO dbo.Orders VALUES (?, ?, ?, ?);");
   var start = Date.UTC(2023, 0, 1);
   for (var j = 1; j <= ORDERS; j++) {
     var day = new Date(start + Math.floor(rand() * 730) * 86400000).toISOString().slice(0, 10);
