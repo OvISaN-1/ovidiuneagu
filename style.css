@@ -104,12 +104,13 @@ a { color: inherit; }
   .portrait { max-width: none; }
 }
 h1 {
-  font-size: clamp(2.1rem, 5.2vw, 3.75rem);
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
   font-weight: 650;
   margin: 0 0 1.25rem;
-  max-width: 18ch;
+  max-width: 22ch;
+  text-wrap: balance;
 }
 .lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; margin: 0 0 2rem; text-wrap: balance; }
 .nowrap { white-space: nowrap; }
