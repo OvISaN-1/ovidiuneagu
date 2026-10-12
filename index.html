@@ -35,6 +35,7 @@
   </script>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <script src="demo.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -48,6 +49,7 @@
       <nav aria-label="Primary">
         <a class="nav-skills" href="#skills">Skills</a>
         <a href="#projects">Projects</a>
+        <a class="nav-demo" href="#demo">Demo</a>
         <a class="nav-contact" href="#contact">Get in touch</a>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch colour theme">Dark</button>
       </nav>
@@ -139,6 +141,53 @@
           <p>I scripted the company's first fully automated mailing campaign inside one stored procedure. It imported client requirements from files, processed the data and exported the output files.</p>
         </li>
       </ol>
+    </section>
+
+    <section class="wrap section reveal" id="demo">
+      <h2>Try it: tuning a slow query</h2>
+      <p class="note">Both queries list every customer with their total spend and latest order. They run here in your browser on SQLite, against 40,000 made-up orders with no indexes. The first query reads the orders table twice for each customer. The second reads it once.</p>
+      <div class="demo">
+        <div class="demo-card">
+          <div class="demo-head">
+            <h3>Before</h3>
+            <span>Correlated subqueries</span>
+          </div>
+<pre class="code"><code>SELECT c.customer_id, c.name,
+  (SELECT SUM(o.amount)
+     FROM orders o
+    WHERE o.customer_id = c.customer_id
+  ) AS total_spend,
+  (SELECT MAX(o.order_date)
+     FROM orders o
+    WHERE o.customer_id = c.customer_id
+  ) AS last_order
+FROM customers c
+ORDER BY c.customer_id;</code></pre>
+          <button class="btn btn-ghost demo-run" type="button" data-query="slow">Run before</button>
+          <div class="demo-out" aria-live="polite"></div>
+        </div>
+        <div class="demo-card">
+          <div class="demo-head">
+            <h3>After</h3>
+            <span>One set-based pass</span>
+          </div>
+<pre class="code"><code>SELECT c.customer_id, c.name,
+       t.total_spend, t.last_order
+FROM customers c
+LEFT JOIN (
+  SELECT customer_id,
+         SUM(amount) AS total_spend,
+         MAX(order_date) AS last_order
+  FROM orders
+  GROUP BY customer_id
+) t ON t.customer_id = c.customer_id
+ORDER BY c.customer_id;</code></pre>
+          <button class="btn btn-primary demo-run" type="button" data-query="fast">Run after</button>
+          <div class="demo-out" aria-live="polite"></div>
+        </div>
+      </div>
+      <p class="demo-summary" aria-live="polite"></p>
+      <p class="demo-foot">This is SQLite, not SQL Server, but the technique is the same. Nothing leaves your browser.</p>
     </section>
 
     <!--
