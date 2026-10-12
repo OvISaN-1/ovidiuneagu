@@ -113,7 +113,7 @@ h1 {
   max-width: 22ch;
   text-wrap: balance;
 }
-.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; margin: 0 0 2rem; text-wrap: balance; }
+.lead { font-size: 1.15rem; color: var(--muted); max-width: 58ch; margin: 0 0 2rem; text-wrap: pretty; }
 .nowrap { white-space: nowrap; }
 .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 @media (max-width: 560px) {
