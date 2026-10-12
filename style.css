@@ -140,13 +140,16 @@ h3 { font-size: 1.05rem; margin: 0 0 .4rem; }
 p { margin: 0 0 1rem; }
 .note { color: var(--muted); max-width: 60ch; }
 
-/* Skills: asymmetric grid, collapses to one column on mobile */
-.skills { display: grid; grid-template-columns: 1fr; gap: 2rem 3rem; }
-.skills p { color: var(--muted); max-width: 60ch; }
-@media (min-width: 768px) {
-  .skills { grid-template-columns: 2fr 1fr; }
-  .skill-wide { grid-column: 1 / -1; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-}
+/* Skills: grouped rows with years, two columns on wider screens */
+.skill-groups { display: grid; grid-template-columns: 1fr; gap: 2rem 4rem; margin-top: 2rem; }
+.skill-group p { color: var(--muted); max-width: 40ch; margin: 0; }
+.skill-list { list-style: none; margin: 0; padding: 0; }
+.skill-list li { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; border-top: 1px solid var(--line); }
+.skill-list li:last-child { border-bottom: 1px solid var(--line); }
+.yrs { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.langs { margin: 2.5rem 0 0; color: var(--muted); }
+.langs strong { color: var(--text); font-weight: 600; }
+@media (min-width: 768px) { .skill-groups { grid-template-columns: 1fr 1fr; } }
 
 /* Projects */
 .projects { list-style: none; margin: 0; padding: 0; }
@@ -154,6 +157,8 @@ p { margin: 0 0 1rem; }
 .projects li:last-child { border-bottom: 1px solid var(--line); }
 .projects p { color: var(--muted); margin: 0; max-width: 62ch; }
 .projects .meta { font-size: .9rem; margin-top: .15rem; }
+.projects .result { color: var(--accent); font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 .5rem; max-width: 14ch; text-wrap: balance; font-variant-numeric: tabular-nums; }
+.projects .to { color: var(--muted); font-size: .6em; font-weight: 500; letter-spacing: 0; }
 @media (min-width: 768px) { .projects li { grid-template-columns: 1fr 2fr; } }
 
 /* Contact */
