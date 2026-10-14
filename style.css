@@ -172,6 +172,7 @@ p { margin: 0 0 1rem; }
 .projects .meta { font-size: .9rem; margin-top: .15rem; }
 .projects .result { color: var(--accent); font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 .5rem; max-width: 14ch; text-wrap: balance; font-variant-numeric: tabular-nums; }
 .projects .to { color: var(--muted); font-size: .6em; font-weight: 500; letter-spacing: 0; }
+.projects p a { color: var(--accent); text-underline-offset: .2em; }
 @media (min-width: 768px) { .projects li { grid-template-columns: 1fr 2fr; } }
 
 /* Query tuning demo */
